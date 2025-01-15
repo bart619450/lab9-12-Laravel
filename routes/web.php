@@ -9,6 +9,7 @@ use App\Http\Controllers\AutorController;  // Import AutorController
 use App\Http\Controllers\TypFilmuController;  // Import TypFilmuController
 use App\Http\Controllers\KomentarzController;
 use App\Http\Controllers\RoleRequestController;
+//use App\Http\Middleware\OwnershipMiddleware;
 
 Route::delete('/komentarz/{id}', [KomentarzController::class, 'destroy'])->name('komentarz.delete');
 
@@ -32,27 +33,47 @@ Route::middleware('auth')->group(function () {
     Route::get('/film/{id}', [FilmController::class, 'show'])->name('film.show');
     Route::post('/film/{id}/comment', [FilmController::class, 'addComment'])->name('film.addComment');
     Route::post('/film/{id}/rating', [FilmController::class, 'addRating'])->name('film.addRating');
-    Route::get('/film/{id}/edit', [FilmController::class, 'edit'])->name('film.edit');
-    Route::delete('/film/{id}', [FilmController::class, 'destroy'])->name('film.destroy');
+    //Route::get('/film/{id}/edit', [FilmController::class, 'edit'])->name('film.edit');
+    //Route::delete('/film/{id}', [FilmController::class, 'destroy'])->name('film.destroy');
     Route::put('film/{film}', [FilmController::class, 'update'])->name('film.update');
     Route::post('film/{film}/komentarz', [FilmController::class, 'storeComment'])->name('komentarz.store');
     Route::post('/film/{id}/ocena', [FilmController::class, 'storeRating'])->name('film.ocena');
     Route::get('/my-films', [FilmController::class, 'user_index'])->name('film.user_index');
+
+    Route::middleware('auth','owner')->group(function () {
+        Route::get('/film/{film}/edit', [FilmController::class, 'edit'])->name('film.edit');
+        //Route::put('/film/{film}', [FilmController::class, 'update'])->name('film.update');
+        Route::delete('/film/{film}', [FilmController::class, 'destroy'])->name('film.destroy');
+    });
     
 
     
     // Trasy związane z aktorami
-    Route::resource('aktor', AktorController::class);
+   // Route::resource('aktor', AktorController::class);
+   Route::resource('aktor', AktorController::class)->only(['index', 'show','create','store']);
+    Route::middleware('auth','owner')->group(function () {
+        Route::resource('aktor', AktorController::class)->except(['index', 'show','store','create']);
+    });
+
     Route::get('/my-actors', [AktorController::class, 'user_index'])->name('aktor.user_index');
 
     
     // Trasy związane z autorami
-    Route::resource('autor', AutorController::class);
+    //Route::resource('autor', AutorController::class);
+    Route::resource('autor', AutorController::class)->only(['index', 'show','create','store']);
+    Route::middleware('auth','owner')->group(function () {
+        Route::resource('autor', AutorController::class)->except(['index', 'show','store','create']);
+    });
+
     Route::get('/my-authors', [AutorController::class, 'user_index'])->name('autor.user_index');
 
     
     // Trasy związane z typami filmów
-    Route::resource('typfilmu', TypFilmuController::class);
+    //Route::resource('typfilmu', TypFilmuController::class);
+    Route::resource('typfilmu', TypFilmuController::class)->only(['index', 'show','create','store']);
+    Route::middleware('auth','owner')->group(function () {
+        Route::resource('typfilmu', TypFilmuController::class)->except(['index', 'show','create','store']);
+    });
     Route::get('/my-filmtypes', [TypFilmuController::class, 'user_index'])->name('typfilmu.user_index');
 
     Route::post('/role-request', [RoleRequestController::class, 'store'])->name('role_request.store');
@@ -68,6 +89,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
     Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::patch('/admin/users/{user}/destroy-stay', [UserController::class, 'destroyStay'])
+         ->name('admin.users.destroyStay');
+    
 
     Route::get('/admin/role-requests', [RoleRequestController::class, 'index'])->name('admin.request.index');
     Route::patch('/admin/role-requests/{id}/approve', [RoleRequestController::class, 'approve'])->name('role_request.approve');
