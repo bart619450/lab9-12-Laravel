@@ -17,6 +17,23 @@
         <style>
 
 
+
+.nawigacja{
+    max-width: 1280px; /* Odpowiada max-w-7xl */
+    margin-left: auto; /* Ustawia automatyczny margines po lewej stronie, co centruje element */
+    margin-right: auto; /* Ustawia automatyczny margines po prawej stronie, co centruje element */
+    padding-left: 1rem; /* Odpowiada px-4 */
+    padding-right: 1rem; /* Odpowiada px-4 */
+}
+
+/* Duża czcionka */
+.large-font .nawigacja{
+    max-width: 1580px; /* Odpowiada max-w-7xl */
+    margin-left: 150px; /* Ustawia automatyczny margines po lewej stronie, co centruje element */
+    margin-right: 0;
+    padding-left: 1rem; /* 16px */
+    padding-right: 1rem; /* 16px */
+}
 /* Duża czcionka */
 .large-font {
     font-size: 130%;
@@ -119,6 +136,10 @@
 
 /* Tryb wysokiego kontrastu */
 /* Tryb wysokiego kontrastu */
+.high-contrast .custom-logo {
+    filter: brightness(0) invert(1);
+                        
+}
 .high-contrast .bg-white{
     background-color: #101010;
     color: #fff;
@@ -135,7 +156,15 @@
 
 .high-contrast .table th, .high-contrast .table td {
     border-color: #fff;  /* Jasne obramowanie w trybie wysokiego kontrastu */
-    background-color:  #000;
+    background-color:  #1B1212;
+    color: #FAF9F6;
+}
+.high-contrast .table tr:hover {
+    background-color: #444444; /* Kolor zmieniany po najechaniu kursorem */
+    color: #FFFFFF;
+}
+.high-contrast .table tr:nth-child(even) {
+    background-color: lightgray;
 }
 
 .high-contrast a {
@@ -229,26 +258,74 @@
 
             /* Styl dla tabel */
 .table {
+    
     border-collapse: collapse;
+    border-spacing: 0;
     width: 100%;
     margin-bottom: 1px;
     font-size: 16px;
     text-align: left;
+    background-color:#F0F8FF;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .table th, .table td {
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-    word-wrap: break-word;
+    padding: 3px 9px;
+    
+    word-wrap: break-all;
+    
 }
 
 .table th {
-    background-color: #f4f4f4;
+    background-color: #F1F5F9;
     font-weight: bold;
+    color: #1F2937;
+    border-bottom: 3px solid #9CA3AF;
+    text-transform: uppercase
 }
 
 .table td {
+    
     vertical-align: middle;
+    color: #4B5563;
+    border: 2px solid #D1D5DB;
+}
+.table tr:nth-child(even) {
+    background-color: #F8FAFC;
+}
+
+.table tr:hover {
+    background-color: #D1D5DB;
+    color: #1F2937;
+    cursor: pointer;
+}
+.table tr:first-child th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.table tr:first-child th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.table tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+.table tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+.table .narrow-column {
+    width: 200px;
+    max-width: 500px;
+    
+}
+
+.table .wide-column {
+    width: 500px;
+    max-width: 500px;
+    
 }
 
 /* Styl dla przycisków */
@@ -276,7 +353,7 @@
 .btn-ko{
     background-color:#0066b2;
     font-size: 110%;
-    width: 250px;
+    width: 230px;
 }
 
 .btn-primary {

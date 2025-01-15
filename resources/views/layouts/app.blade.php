@@ -17,10 +17,131 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
+        
     <style>
 
 
+/* Styl dla kontenera slidera */
+
+
+.szukaj{
+    margin-right:300px;
+    
+
+}
+.slider-container {
+    position: relative;
+    width: 50%;
+    max-width: 50%;
+    
+    overflow: hidden;
+    
+    border-style: solid;
+    border-width: 4px;
+    border-color: orange;
+    border-radius:12px;
+    background-color:#b36200
+    
+}
+
+/* Ukrywanie zdjęć, tylko jedno widoczne na raz */
+.slider-slide {
+    display: none;
+    width: 100%;
+    transition: opacity 0.5s ease-in-out;
+    
+}
+.zdj{
+    width: 600px;
+    height:500px;
+}
+
+/* Pokazywanie zdjęcia aktywnego */
+.slider-slide.active {
+    display: block;
+}
+.pr{
+    margin-left:265px;
+    border-radius:4px;
+    height:200px;
+    margin-top: 140px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    transition: background-color 0.3s ease;
+}
+.pr:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+.nx{
+    margin-right: 265px;
+    border-radius:4px;
+    height:200px;
+    margin-top: 140px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    transition: background-color 0.3s ease;
+    
+}
+
+.nx:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.absolute{
+    margin-left:100px;
+}
+.podZ{
+    font-size: 40px;
+    background-color: #b36200;
+    color:white;
+    text-align:center;
+}
+.nawigacja{
+    max-width: 1280px; /* Odpowiada max-w-7xl */
+    margin-left: auto; /* Ustawia automatyczny margines po lewej stronie, co centruje element */
+    margin-right: auto; /* Ustawia automatyczny margines po prawej stronie, co centruje element */
+    padding-left: 1rem; /* Odpowiada px-4 */
+    padding-right: 1rem; /* Odpowiada px-4 */
+}
+.przzdj{
+    background-color: #343434;
+}
+.przed{
+    background-color: #343434;
+    margin-top:10px;
+}
+.srodek{
+    text-align:center;
+}
+
+
+.logowanie{
+    margin-top:10px;
+    margin-bottom:10px;
+    background-color:lightgray;
+    margin-left:400px;
+    margin-right:400px;
+    font-size:20px;
+    border-radius:10px;
+}
+
+
 /* Duża czcionka */
+.large-font .nawigacja{
+    max-width: 1580px; /* Odpowiada max-w-7xl */
+    margin-left: 150px; /* Ustawia automatyczny margines po lewej stronie, co centruje element */
+    margin-right: 0;
+    padding-left: 1rem; /* 16px */
+    padding-right: 1rem; /* 16px */
+}
 .large-font {
     font-size: 130%;
 }
@@ -31,7 +152,7 @@
     font-size: 120% !important;;
 }
 .large-font .custom-nav-link{
-    font-size: 105%;
+    font-size: 100%;
 }
 .large-font .hiden{
     font-size: 120%;
@@ -164,7 +285,10 @@
     padding: 10px;
 }
 
-
+.high-contrast .custom-logo {
+    filter: brightness(0) invert(1);
+                        
+}
 .high-contrast select{
     background-color: black;
     border-color: yellow;
@@ -410,6 +534,45 @@ input[type="text"] {
             {{ $slot }}
             </main>
         </div>
+        <script>
+            let currentSlide = 0;
+
+const slides = document.querySelectorAll('.slider-slide');
+
+function showSlide(index) {
+    if (index >= slides.length) {
+        currentSlide = 0;
+    } else if (index < 0) {
+        currentSlide = slides.length - 1;
+    } else {
+        currentSlide = index;
+    }
+
+    slides.forEach((slide, idx) => {
+        slide.classList.remove('active');
+        if (idx === currentSlide) {
+            slide.classList.add('active');
+        }
+    });
+}
+
+function nextSlide() {
+    showSlide(currentSlide + 1);
+}
+
+function prevSlide() {
+    showSlide(currentSlide - 1);
+}
+
+// Inicjalizacja slidera
+showSlide(currentSlide);
+
+// Opcjonalnie: automatyczna zmiana zdjęć co 5 sekund
+setInterval(() => {
+    nextSlide();
+}, 5000);
+
+            </script>
         <script>
 document.addEventListener("DOMContentLoaded", function () {
     const body = document.body;

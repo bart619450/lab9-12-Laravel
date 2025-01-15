@@ -49,6 +49,18 @@
                             Usuń użytkownika
                         </button>
                     </form>
+                    <form method="POST" action="{{ route('admin.users.destroyStay', $user) }}" 
+                        onsubmit="return confirm('Czy na pewno chcesz usunąć tego użytkownika, pozostawiając jego dane? \nTo działanie jest nieodwracalne!');" 
+                        class="mt-4">
+                        @csrf
+                        @method('PATCH')
+
+                        <!-- Przycisk usuwania z zachowaniem danych -->
+                        <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                            Usuń użytkownika, pozostawiając dane
+                        </button>
+                    </form>
+
                 </div>
             </div>
         </div>

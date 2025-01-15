@@ -7,7 +7,7 @@
     @csrf
     @method('PUT')
     @include('film.partials.form')
-    <button type="submit" class="btn btn-primary">Aktualizuj</button>
+    
     <a href="{{ route('film.index') }}" class="btn btn-secondary">Anuluj</a>
 </form>
 

@@ -24,7 +24,7 @@ class FilmSeeder extends Seeder
         $admin1 = User::create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
-            'password' => bcrypt('supersecretpassword'),
+            'password' => bcrypt('qwerty123'),
             'role' => 'admin',
         ]);
         $krytyk1 = User::create([
@@ -33,7 +33,7 @@ class FilmSeeder extends Seeder
             'password' => bcrypt('qwerty123'),
             'role' => 'krytyk',
         ]);
-        $krytyk1 = User::create([
+        $krytyk2 = User::create([
             'name' => 'Arek',
             'email' => 'krytyk2@example.com',
             'password' => bcrypt('qwerty123'),
