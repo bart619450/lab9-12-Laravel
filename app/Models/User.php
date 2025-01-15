@@ -66,7 +66,11 @@ class User extends Authenticatable
         return $this->hasMany(TypFilmu::class);
     }
     public function roleRequest()
-{
-    return $this->hasOne(RoleRequest::class);
-}
+    {
+        return $this->hasOne(RoleRequest::class);
+    }
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
 }

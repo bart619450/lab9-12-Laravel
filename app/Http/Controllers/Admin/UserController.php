@@ -6,18 +6,27 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\RoleRequest;
+use Illuminate\Support\str;
 
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Pobieramy tylko użytkowników, którzy nie są adminami
-        $users = User::whereIn('role', ['user', 'krytyk'])->get();
+        // Pobieranie wyszukiwanej frazy
+        $search = $request->input('search');
 
-    
-        // Zwracamy widok z listą użytkowników
-        return view('admin.users.index', compact('users'));
+        // Filtrowanie i paginacja użytkowników
+        $users = User::whereIn('role', ['user', 'krytyk'])
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('name', 'like', "%$search%")
+                            ->orWhere('email', 'like', "%$search%");
+                });
+            })
+            ->paginate(10);
+
+        return view('admin.users.index', compact('users', 'search'));
     }
 
     public function dashboard()
@@ -62,4 +71,20 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('admin.users.index')->with('success', 'Użytkownik został usunięty!');
     }
+    public function destroyStay(User $user)
+{
+    $deletedUser = User::firstOrCreate(['name' => 'Deleted'], [
+        'email' => 'deleted@example.com',
+        'password' => bcrypt(Str::random(16))
+    ]);
+
+    // Przypisz filmy, aktorów i autorów do użytkownika Deleted
+    $user->filmy()->update(['user_id' => $deletedUser->id]);
+    $user->autorzy()->update(['user_id' => $deletedUser->id]);
+    $user->aktorzy()->update(['user_id' => $deletedUser->id]);
+
+    $user->delete();
+
+    return redirect()->route('admin.users.index')->with('success', 'Użytkownik został usunięty, filmy zachowano!');
+}
 }

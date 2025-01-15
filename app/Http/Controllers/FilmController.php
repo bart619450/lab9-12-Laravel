@@ -11,6 +11,7 @@ use App\Models\Komentarz;
 use App\Models\OcenaKrytyka; 
 use App\Models\OcenaUzytkownika;
 use Illuminate\Support\Facades\Auth;
+use App\Policies\FilmPolicy;
 
 class FilmController extends Controller
 {
@@ -199,6 +200,7 @@ public function user_index(Request $request)
     {
         // Pobierz dane potrzebne do formularza
         $film = Film::findOrFail($id);
+        
         $typyfilmow = TypFilmu::all();
         $aktorzy = Aktor::all();
         $autorzy = Autor::all();
